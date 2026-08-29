@@ -1,0 +1,35 @@
+# wetrecomp - input mapping settings
+#
+# Loaded automatically at startup in addition to hardware.toml (see
+# OnConfigurePaths in src/wetrecomp_app.h). --flag on the command line and
+# REX_* environment variables always override values from this file.
+#
+# Gamepad button layouts (DualShock 4 / DualSense / Xbox / Switch Pro, etc.)
+# are auto-mapped to the Xbox 360 layout by SDL - there is nothing to
+# configure for that here. These three cvars only select/tune the backend.
+#
+# Flat key = value only
+
+# "" is rejected by this cvar's validator (logs a warning, falls back to
+# compiled default) - must be an explicit value: "sdl", "xinput", or "nop"
+# (input disabled). "sdl" is what's actually in use, confirmed via the
+# startup log line "SDL input driver initialized successfully".
+input_backend = "sdl"
+
+# Path to a custom HID remap file used to fill in gamepads SDL doesn't
+# already recognize, or "" to skip it. "gamecontrollerdb.txt" matches the
+# file CMakeLists.txt stages next to the exe from settings/gamecontrollerdb.txt
+# (sourced from https://github.com/mdqinc/SDL_GameControllerDB).
+hid_mappings_file = "gamecontrollerdb.txt"
+
+# Route the controller Guide/PS button to the guest.
+guide_button = true
+
+# Keyboard+mouse run in parallel with a physical gamepad, not instead of it -
+# the SDK always merges every assigned device's input for guest user 0
+# (see rex::input::MergeInto). mnk_mode turns on keyboard-as-controller;
+# mnk_mouse additionally routes mouse movement to the right stick.
+mnk_mode = true
+mnk_mouse = true
+mnk_sensitivity = 1.0
+

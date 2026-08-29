@@ -1,0 +1,53 @@
+# Manual function boundaries for addresses that the auto-analyzer didn't
+# discover as functions on its own (only reached via plain `b`, not `bl`,
+# so no call-graph edge pointed at them). Leaving the table empty lets
+# codegen find the natural boundaries itself (size=0 -> discover via region).
+#
+# Found via: rexglue codegen (UnresolvedCall errors during Validate phase).
+
+[functions]
+0x8301A948 = {}
+0x82BA1948 = {}
+0x82F88858 = {}
+0x82BA13F8 = {}
+0x82F9EB00 = {}
+0x82FED688 = {}
+0x82F898D0 = {}
+0x82D43F78 = {}
+
+# Found at runtime: "Call to invalid or unregistered function" (indirect
+# call target only reachable via function pointer / vtable, not by bl/b).
+0x83347B48 = {}
+0x83356DB8 = {}
+
+# Found via logs/stub_sweep.txt (safety-net stub in OnPostSetup, see
+# wetrecomp_app.h) - real addresses actually called at runtime
+0x832654F8 = {}
+0x82CF88C0 = {}
+0x82CE55F8 = {}
+0x82B1BEF8 = {}
+0x83009A98 = {}
+0x82FF88A0 = {}
+0x82983FA8 = {}
+0x82B79D30 = {}
+0x82B015E0 = {}
+0x8301DE80 = {}
+0x82FFD750 = {}
+0x82984010 = {}
+0x82A234A0 = {}
+0x82983FE8 = {}
+0x82983FD8 = {}
+0x82908F98 = {}
+0x82FE3B38 = {}
+0x82B7BDD0 = {}
+0x82983FB8 = {}
+0x82983F98 = {}
+0x828B7EF8 = {}
+0x82983F68 = {}
+0x82984020 = {}
+0x82983FC8 = {}
+0x828D44E0 = {}
+0x82984030 = {}
+0x828D6C38 = {}
+0x82983F78 = {}
+0x82B015D0 = {}
