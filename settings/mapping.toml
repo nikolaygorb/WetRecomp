@@ -1,4 +1,4 @@
-# wetrecomp - input mapping settings
+# WetRecomp - input mapping settings
 #
 # Loaded automatically at startup in addition to hardware.toml (see
 # OnConfigurePaths in src/wetrecomp_app.h). --flag on the command line and
@@ -32,4 +32,48 @@ guide_button = true
 mnk_mode = true
 mnk_mouse = true
 mnk_sensitivity = 1.0
+
+# ─────────────────────────────────────────────────────────────
+# Keyboard bindings (default values)
+# ─────────────────────────────────────────────────────────────
+# Format: comma-separated list of keys, optional modifiers (Shift+, Ctrl+, Alt+)
+
+# Controller buttons
+keybind_a = "Semicolon,Space"          # A button
+keybind_b = "Quote,Backspace"          # B button
+keybind_x = "L"                        # X button
+keybind_y = "P"                        # Y button
+
+# Triggers (analog)
+keybind_left_trigger = "Q,I"           # Left trigger
+keybind_right_trigger = "E,O"          # Right trigger
+
+# Shoulder buttons
+keybind_left_shoulder = "1"            # Left shoulder (LB)
+keybind_right_shoulder = "3"           # Right shoulder (RB)
+
+# Left stick (analog)
+keybind_lstick_up = "W"                # Left stick up
+keybind_lstick_down = "S"              # Left stick down
+keybind_lstick_left = "A"              # Left stick left
+keybind_lstick_right = "D"             # Left stick right
+keybind_lstick_press = "F"             # Left stick press (L3)
+
+# Right stick (analog)
+keybind_rstick_up = "Up"               # Right stick up
+keybind_rstick_down = "Down"           # Right stick down
+keybind_rstick_left = "Left"           # Right stick left
+keybind_rstick_right = "Right"         # Right stick right
+keybind_rstick_press = "K"             # Right stick press (R3)
+
+# D-pad
+keybind_dpad_up = "Shift+Up"           # D-pad up
+keybind_dpad_down = "Shift+Down"       # D-pad down
+keybind_dpad_left = "Shift+Left"       # D-pad left
+keybind_dpad_right = "Shift+Right"     # D-pad right
+
+# Special buttons
+keybind_back = "Z,Tab"                 # Back button
+keybind_start = "X,Return"             # Start button
+keybind_guide = ""                     # Guide button (empty = disabled)
 
