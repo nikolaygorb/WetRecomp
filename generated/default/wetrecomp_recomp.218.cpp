@@ -1,8 +1,5 @@
 #include "wetrecomp_funcs.218.h"
 
-#include <rex/cvar.h>
-REXCVAR_DECLARE(bool, wet_fps60_unlock);
-
 DEFINE_REX_FUNC(sub_82517B68) {
 	REX_FUNC_PROLOGUE();
 	uint32_t ea{};
@@ -29526,14 +29523,8 @@ loc_83066E30:
 	// b 0x83066e70
 	goto loc_83066E70;
 loc_83066E64:
-	// li r11,2 (PATCH: ported xenia-canary game-patches "60 FPS" for WET
-	// 425307DB, which flips this immediate 2->1 at guest address 0x83066e67.
-	// r11 feeds a per-frame step/divisor a few instructions below; halving it
-	// here is what unlocks the higher update rate. Off by default - gated by
-	// the wet_fps60_unlock cvar/setting since it can affect physics/animation
-	// timing that assumed the original cadence. Manual re-add required if
-	// codegen ever regenerates this file.)
-	ctx.r11.s64 = REXCVAR_GET(wet_fps60_unlock) ? 1 : 2;
+	// li r11,2
+	ctx.r11.s64 = 2;
 	// b 0x83066e70
 	goto loc_83066E70;
 loc_83066E6C:

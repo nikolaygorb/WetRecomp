@@ -42,7 +42,8 @@
             "cacheVariables": {
                 "CMAKE_C_COMPILER": "clang",
                 "CMAKE_CXX_COMPILER": "clang++",
-                "CMAKE_OSX_ARCHITECTURES": "x86_64"
+                "CMAKE_OSX_ARCHITECTURES": "x86_64",
+                "CMAKE_PREFIX_PATH": "${sourceDir}/rexglue/mac-amd64"
             },
             "condition": {
                 "type": "equals",

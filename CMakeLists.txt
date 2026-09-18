@@ -16,6 +16,12 @@ set(WETRECOMP_SOURCES
 )
 
 if(WIN32)
+    list(APPEND WETRECOMP_SOURCES
+        src/wetrecomp.rc
+    )
+endif()
+
+if(WIN32)
     add_executable(wetrecomp WIN32 ${WETRECOMP_SOURCES})
 else()
     add_executable(wetrecomp ${WETRECOMP_SOURCES})
