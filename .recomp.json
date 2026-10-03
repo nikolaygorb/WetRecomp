@@ -1,0 +1,20 @@
+{
+    "$schema": "https://recomp.fyi/schema/v1.json",
+    "game": "Wet",
+    "system": "Xbox 360",
+    "type": "recomp",
+    "toolchain": "ReXGlue SDK",
+    "status": "playable",
+    "targets": [
+        "Windows",
+        "Linux",
+        "macOS"
+    ],
+    "maintainers": [
+        {
+            "name": "nikolaygorb",
+            "link": "https://github.com/nikolaygorb"
+        }
+    ],
+    "approach": "Static recompilation of the PowerPC code to x86-64, Direct3D 12 / Vulkan renderer"
+}
