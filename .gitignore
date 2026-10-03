@@ -1,7 +1,8 @@
 assets/*
 !assets/README.md
 !assets/icon.png
-generated/default/codegen.d
+generated/*
+!generated/rexglue.cmake
 out/*
 rexglue/*
 !rexglue/README.md
