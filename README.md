@@ -13,24 +13,29 @@ Fully playable: video, audio, gameplay, achievements, and progression all work.
 ## Requirements
 
 - CMake 3.25+, Ninja, Clang/LLVM (clang-cl works too)
-- [ReXGlue SDK](https://github.com/rexglue/rexglue-sdk/releases) — see [`rexglue/README.md`](rexglue/README.md)
-- [extract-xiso](https://github.com/XboxDev/extract-xiso/releases) and your own legally-owned copy of WET
+- [extract-xiso](https://github.com/XboxDev/extract-xiso/releases) and your own legally-owned copy of WET:
+  Title ID `584109C2` (XA-2498), Media ID `3077A693`, Module hash `9A084828F85F951B`
 
-## Setup
+## Game data
 
-1. **SDK** — download the `win-amd64` release and extract into `rexglue/win-amd64`.
-2. **Licence copy** of game  Title ID: `584109C2` (XA-2498), Media ID: `3077A693`, Module hash = `9A084828F85F951B`.
-2. **Game data** — extract the Xbox 360 ISO with `extract-xiso.exe -x WET.iso`, then copy the contents into `assets/`:
-   ```
-   assets/
-     default.xex
-     nxeart
-     lu0/  lu1/
-     media/  movies0/  movies1/
-     streams0/  streams1/
-   ```
+Extract the Xbox 360 ISO with `extract-xiso.exe -x WET.iso`, then copy the contents into `assets/` (gitignored):
+
+```
+assets/
+  default.xex
+  nxeart
+  lu0/  lu1/
+  media/  movies0/  movies1/
+  streams0/  streams1/
+```
 
 ## Build
+
+```bash
+git clone --recurse-submodules <repo-url>
+```
+
+The ReXGlue SDK is built from the `thirdparty/rexglue-sdk` submodule; no prebuilt SDK is needed.
 
 ```powershell
 cmake --preset win-amd64-relwithdebinfo
@@ -53,7 +58,7 @@ Logs land in `out\build\<preset>\logs\*.log`.
 
 ## Configuration
 
-`settings/hardware.toml` (rendering/perf) and `settings/mapping.toml` (input) load automatically. CLI flags and `REX_*` env vars override them. See [`settings/README.md`](settings/README.md) for the reference.
+`settings/hardware.toml` (rendering/perf, including `wet_gpu_wait_mode` for GPU-wait CPU usage) and `settings/mapping.toml` (input) load automatically. CLI flags and `REX_*` env vars override them. See [`settings/README.md`](settings/README.md) for the reference.
 
 ## Credits
 

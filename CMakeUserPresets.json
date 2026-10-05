@@ -4,9 +4,7 @@
         {
             "name": "user-env",
             "hidden": true,
-            "cacheVariables": {
-                "CMAKE_PREFIX_PATH": "rexglue/win-amd64"
-            }
+            "cacheVariables": {}
         },
         { "name": "local-win-debug", "inherits": ["win-amd64-debug", "user-env"] },
         { "name": "local-win-release", "inherits": ["win-amd64-release", "user-env"] },

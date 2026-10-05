@@ -32,6 +32,7 @@ Precedence: `--flag=value` > `REX_FLAG=value` > `settings/*.toml` > compiled def
 | `wet_disable_motion_blur` | `false` | Disable motion blur |
 | `wet_disable_depth_of_field` | `false` | Disable depth of field |
 | `wet_disable_shaky_camera` | `false` | Disable shaky camera + film effect |
+| `wet_gpu_wait_mode` | `1` | Render thread wait for the GPU: 0 busy spin, 1 yield, 2 sleep |
 
 ## `mapping.toml`
 

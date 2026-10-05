@@ -60,6 +60,11 @@ headless = false
 log_level = "critical"
 
 gpu_allow_invalid_fetch_constants = true
+use_dedicated_xma_thread = false
+xma_decoder = "new"
+mount_cache = true
+framerate_limit = 0
+readback_resolve  = "fast"
 
 # Perf CSV log path (per-frame metrics). Empty = disabled.
 # Only works when REXGLUE_ENABLE_PERF_COUNTERS is defined (non-Release).
@@ -76,3 +81,6 @@ wet_fps60_unlock = true
 wet_disable_motion_blur = false
 wet_disable_depth_of_field = false
 wet_disable_shaky_camera = false
+
+# 0 = busy spin (original), 1 = yield the core, 2 = sleep 200us
+wet_gpu_wait_mode = 2
