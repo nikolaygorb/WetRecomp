@@ -12,8 +12,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Fix git symlinks on Windows (libmspack in SDK uses symlinks)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/fix_symlinks.cmake)
 
-# CPU optimization presets
-#include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/build_optimizations.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/build_optimizations.cmake)
 
 # Build ReXGlue SDK from source (git submodule)
 set(REXSDK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/rexglue-sdk" CACHE PATH "Path to rexglue-sdk source tree" FORCE)
@@ -47,9 +46,6 @@ endif()
 # GPU_PLUGINS xenos required for xenos rendering; without it rexgpu-xenosd.dll
 # isn't staged next to the exe and the runtime fails to find the GPU plugin.
 rexglue_setup_target(wetrecomp GPU_PLUGINS xenos)
-
-# Link against rexui for UI support (imgui, etc.)
-target_link_libraries(wetrecomp PRIVATE rex::ui)
 
 # SDL looks for this file (name set by settings/mapping.toml's
 # hid_mappings_file) next to the exe at startup to fill in gamepads it
