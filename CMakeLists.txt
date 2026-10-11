@@ -29,6 +29,7 @@ include(generated/rexglue.cmake)
 set(WETRECOMP_SOURCES
     src/main.cpp
     src/gpu_wait_hook.cpp
+    src/language_hook.cpp
 )
 
 if(WIN32)

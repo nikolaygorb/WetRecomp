@@ -84,3 +84,9 @@ wet_disable_shaky_camera = false
 
 # 0 = busy spin (original), 1 = yield the core, 2 = sleep 200us
 wet_gpu_wait_mode = 2
+
+# Xbox locale language (read by the game through XCONFIG_USER_LANGUAGE):
+#  1 = English   3 = German   4 = French   5 = Spanish   6 = Italian
+# The retail disc only ships these five; any other value falls back to English.
+# Restart the game after changing it.
+user_language = 1

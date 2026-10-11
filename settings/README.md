@@ -33,6 +33,7 @@ Precedence: `--flag=value` > `REX_FLAG=value` > `settings/*.toml` > compiled def
 | `wet_disable_depth_of_field` | `false` | Disable depth of field |
 | `wet_disable_shaky_camera` | `false` | Disable shaky camera + film effect |
 | `wet_gpu_wait_mode` | `1` | Render thread wait for the GPU: 0 busy spin, 1 yield, 2 sleep |
+| `user_language` | `1` | Game language: `1` English, `3` German, `4` French, `5` Spanish, `6` Italian. SDK cvar, returned to the game by `ExGetXConfigSetting`; [`src/language_hook.cpp`](../src/language_hook.cpp) forces anything not on the disc back to English. Restart after changing it. |
 
 ## `mapping.toml`
 
