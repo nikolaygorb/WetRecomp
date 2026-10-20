@@ -1,6 +1,6 @@
 Place there game assets.
 
- Title ID:  `584109C2` (XA-2498) 
+ Title ID:  `425307DB` (disc XA-2498) 
  Media ID:  `3077A693` 
  Module hash = `9A084828F85F951B` 
 

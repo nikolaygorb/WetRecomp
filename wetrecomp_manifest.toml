@@ -8,4 +8,4 @@ game_root = "assets"
 [entrypoint]
 file_path = "assets/default.xex"
 out_directory_path = "generated/default"
-includes = ["default_functions.toml"]
+includes = ["default_functions.toml", "patches.toml"]

@@ -12,18 +12,35 @@ gpu_plugin = "xenos"
 # "any" (d3d12 - win default, vulkan - lin default)
 # "d3d12" / "vulkan"
 graphics_backend = "any"
-vsync = false
+vsync = true
 resolution_scale = 2
+present_effect = "fsr"
+present_fsr_sharpness_reduction = 0.3
+present_dither = false
+swap_post_effect = "fxaa"
 async_shader_compilation = true
 native_2x_msaa = true
 anisotropic_override = 1
+present_fsr_quality_mode = "auto"
+present_fsr_max_upsampling_passes = 1
+present_cas_additional_sharpness = 0.2
+xenos_sample_positions = false
+use_fuzzy_alpha_epsilon = false
+depth_bias_shader_offset = true
+force_depth_clamp = false
 
 texture_cache_memory_limit_soft = 1024
 texture_cache_memory_limit_hard = 4096
 clear_memory_page_state = true
-readback_memexport = true
+readback_memexport = false
 readback_memexport_fast = true
-host_present_from_non_ui_thread	= true
+host_present_from_non_ui_thread = true
+window_offset_in_edram = false
+execute_unclipped_draw_vs_on_cpu = false
+
+# set 'true' for Vulkan backend
+#depth_float24_convert_in_pixel_shader = true
+#depth_float24_round = false
 
 window_width = 1920
 window_height = 1080
@@ -34,16 +51,12 @@ resolution = "1920x1080"
 render_target_path_d3d12 = "rtv"
 store_shaders = true
 present_letterbox = true
-  
+
 d3d12_adapter = -1
 d3d12_allow_variable_refresh_rate_and_tearing = true
 d3d12_bindless = true
 d3d12_break_on_error = false
 d3d12_break_on_warning = false
-d3d12_debug = false
-d3d12_dxbc_disasm = false
-d3d12_dxbc_disasm_dxilconv = false
-d3d12_pipeline_creation_threads = -1
 d3d12_queue_priority = 2
 d3d12_submit_on_primary_buffer_end = true
 d3d12_tessellation_wireframe = false
@@ -53,11 +66,12 @@ vulkan_log_debug_messages = false
 vulkan_allow_present_mode_immediate = true
 vulkan_allow_present_mode_fifo_relaxed = false
 vulkan_allow_present_mode_mailbox = false
+vulkan_async_skip_incomplete_frames = false
 
 headless = false
 
-# trace, debug, info, warn, error
-log_level = "critical"
+# trace, debug, info, warn, error, critical
+log_level = "error"
 
 gpu_allow_invalid_fetch_constants = true
 use_dedicated_xma_thread = false
@@ -74,9 +88,9 @@ readback_resolve  = "fast"
 # Produces logs/missed_functions.txt and logs/stub_sweep.txt.
 dev_debug_runtime = false
 
-# Experimental: ported xenia-canary game-patches "60 FPS" patch for WET.
-# Off by default (matches upstream) - can affect physics/animation timing.
-# Project-defined cvar, see generated/default/wetrecomp_recomp.218.cpp.
+# Ported xenia-canary game-patches for WET (src/game_patches.cpp, hooks in
+# patches.toml). The 60 FPS patch is off in the compiled default (as upstream):
+# it can affect physics/animation timing.
 wet_fps60_unlock = true
 wet_disable_motion_blur = false
 wet_disable_depth_of_field = false
@@ -84,6 +98,7 @@ wet_disable_shaky_camera = false
 
 # 0 = busy spin (original), 1 = yield the core, 2 = sleep 200us
 wet_gpu_wait_mode = 2
+wet_match_display_refresh = true
 
 # Xbox locale language (read by the game through XCONFIG_USER_LANGUAGE):
 #  1 = English   3 = German   4 = French   5 = Spanish   6 = Italian

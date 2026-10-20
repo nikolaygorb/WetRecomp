@@ -1,0 +1,69 @@
+# Game patches (src/game_patches.cpp). Ported from xenia-canary game-patches
+# 425307DB - Wet. Static recompilation never reads guest code back, so the
+# original byte patches are re-applied as hooks that run right after the
+# instruction they used to replace.
+
+# 60 FPS: li r11,2 -> li r11,1 (presentation interval)
+[[midasm_hook]]
+address = 0x83066E64
+name = "WetFps60Hook"
+registers = ["r11"]
+after_instruction = true
+
+# Disable Motion Blur: lfs f31,-8132(r9) -> lfs f31,10912(r9)
+[[midasm_hook]]
+address = 0x82CB09B8
+name = "WetMotionBlurHook"
+registers = ["r9", "f31"]
+after_instruction = true
+
+# Disable Depth of Field: lbz r11,1688(r4) -> li r11,0
+[[midasm_hook]]
+address = 0x82AE6A1C
+name = "WetDepthOfFieldHook"
+registers = ["r11"]
+after_instruction = true
+
+# Disable Shaky Camera: stb r11,21(r3) -> stb r10,21(r3)
+[[midasm_hook]]
+address = 0x8274F58C
+name = "WetShakyCameraHook"
+registers = ["r3", "r10"]
+after_instruction = true
+
+# Disable Film Effect: subfe r10,r10,r3 -> li r10,0
+[[midasm_hook]]
+address = 0x82751514
+name = "WetFilmEffectHook"
+registers = ["r10"]
+after_instruction = true
+
+# Disable Film Effect: lbz r10,21(r11) -> li r10,0
+[[midasm_hook]]
+address = 0x82751660
+name = "WetFilmEffect2Hook"
+registers = ["r10"]
+after_instruction = true
+
+# Native mouse look (src/mod/mouse_look/hook.cpp), third-person camera wetcamera::Cam3rd.
+
+# sub_829B8078 (camera input gather, every camera update), mr r4,r30 before the right
+# stick is read: takes the mouse turn. r29 = camera.
+[[midasm_hook]]
+address = 0x829B80EC
+name = "WetMouseLookGather"
+registers = ["r29"]
+
+# sub_829AB470 (yaw/pitch step), before bl sub_829A8168: f2 = delta, f28 = turn speed,
+# r30 = result pointer (tells yaw from pitch), r31 = camera.
+[[midasm_hook]]
+address = 0x829AB4DC
+name = "WetMouseLookTurn"
+registers = ["r1", "r30", "r31", "f2", "f28"]
+
+# sub_829B8078 (camera input gather), stw r10,0(r31): camera flags with the right stick
+# bits, r29 = camera.
+[[midasm_hook]]
+address = 0x829B82D0
+name = "WetMouseLookTouched"
+registers = ["r10", "r29"]

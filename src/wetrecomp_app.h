@@ -15,7 +15,8 @@
 
 #include "debug_tools.h"
 #include "game_cvars.h"
-#include "game_patches.h"
+#include "mod/mouse_look/mouse_look.h"
+#include "render/display_refresh.h"
 #include "utils.h"
 
 #ifdef REXGLUE_ENABLE_PERF_COUNTERS
@@ -36,6 +37,8 @@ public:
 
   void OnPreSetup(rex::RuntimeConfig &config) override
   {
+    display_refresh::MatchDisplayRefreshRate();
+
     std::string backend = REXCVAR_GET(graphics_backend);
     if (backend != "any" && !config.gpu_plugin.empty())
     {
@@ -46,15 +49,6 @@ public:
                     backend);
       }
     }
-  }
-
-  // void OnLoadXexImage(std::string& xex_image) override {}
-  void OnPostLoadXexImage() override
-  {
-    game_patches::Fps60();
-    game_patches::DisableMotionBlur();
-    game_patches::DisableDepthOfField();
-    game_patches::DisableShakyCamera();
   }
 
   void OnPostSetup() override
@@ -74,6 +68,11 @@ public:
       debug_tools::PerformMissingFunctionScan();
       debug_tools::PerformStubSweep();
     }
+  }
+
+  void OnCreateDialogs(rex::ui::ImGuiDrawer *drawer) override
+  {
+    wet::mouse::MouseLook::Get().Attach(window(), drawer);
   }
 
   void OnShutdown() override
@@ -107,7 +106,6 @@ public:
   // void OnLoadXexImage(std::string& xex_image) override {}
   // void OnPostLoadXexImage() override {}
   // void OnPostSetup() override {}
-  // void OnCreateDialogs(rex::ui::ImGuiDrawer* drawer) override {}
   // std::unique_ptr<rex::ui::ImGuiDialog> CreateAchievementsOverlay() override;
   // std::unique_ptr<rex::ui::ImGuiDialog> CreateAchievementNotificationDialog() override;
   // void OnShutdown() override {}

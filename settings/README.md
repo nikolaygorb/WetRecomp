@@ -5,7 +5,7 @@ Two checked-in config files loaded automatically at startup:
 | File | Covers |
 |---|---|
 | [`hardware.toml`](hardware.toml) | Renderer, window, vsync, resolution, debug, gameplay patches |
-| [`mapping.toml`](mapping.toml) | Input backend, keyboard bindings |
+| [`mapping.toml`](mapping.toml) | Input backend, keyboard bindings, native mouse look |
 
 Flat `key = value` only — no `[Table]` headers (the loader reads root-level keys only).
 
@@ -17,7 +17,7 @@ Precedence: `--flag=value` > `REX_FLAG=value` > `settings/*.toml` > compiled def
 |---|---|---|
 | `gpu_plugin` | `"xenos"` | GPU emulation plugin |
 | `graphics_backend` | `"any"` | `"any"` (D3D12 on Windows, Vulkan on Linux), `"d3d12"`, `"vulkan"` |
-| `vsync` | `false` | Vertical sync |
+| `vsync` | `true` | Vertical sync |
 | `resolution_scale` | `2` | Internal render-target supersampling |
 | `async_shader_compilation` | `true` | Compile shaders off the render thread |
 | `native_2x_msaa` | `true` | Native 2x MSAA |
@@ -32,8 +32,9 @@ Precedence: `--flag=value` > `REX_FLAG=value` > `settings/*.toml` > compiled def
 | `wet_disable_motion_blur` | `false` | Disable motion blur |
 | `wet_disable_depth_of_field` | `false` | Disable depth of field |
 | `wet_disable_shaky_camera` | `false` | Disable shaky camera + film effect |
+| `wet_match_display_refresh` | `true` | Guest video mode at the primary monitor's refresh rate instead of `video_mode_refresh_rate` (60 Hz). Paces frames only with `vsync = true`; Windows only; see [`src/render/display_refresh.cpp`](../src/render/display_refresh.cpp). Restart after changing it. |
 | `wet_gpu_wait_mode` | `1` | Render thread wait for the GPU: 0 busy spin, 1 yield, 2 sleep |
-| `user_language` | `1` | Game language: `1` English, `3` German, `4` French, `5` Spanish, `6` Italian. SDK cvar, returned to the game by `ExGetXConfigSetting`; [`src/language_hook.cpp`](../src/language_hook.cpp) forces anything not on the disc back to English. Restart after changing it. |
+| `user_language` | `1` | Game language: `1` English, `3` German, `4` French, `5` Spanish, `6` Italian. SDK cvar, returned to the game by `ExGetXConfigSetting`; [`src/platform/language_hook.cpp`](../src/platform/language_hook.cpp) forces anything not on the disc back to English. Restart after changing it. |
 
 ## `mapping.toml`
 
@@ -44,7 +45,10 @@ Precedence: `--flag=value` > `REX_FLAG=value` > `settings/*.toml` > compiled def
 | `guide_button` | `true` | Route Guide/PS button to guest |
 | `mnk_mode` | `true` | Keyboard-as-controller, merged with any physical pad |
 | `mnk_mouse` | `true` | Route mouse to right stick |
-| `mnk_sensitivity` | `1.0` | Mouse sensitivity (`0.01`–`10.0`) |
+| `mnk_sensitivity` | `1.0` | Mouse sensitivity (`0.01`–`10.0`). With `wet_mouse_look` on it only applies where native mouse look doesn't run (menus, turrets) |
+| `wet_mouse_look` | `true` | Native mouse look: the mouse turns the third-person camera directly, skipping the stick response curve, turn speed and slow motion. Orbit limits and the in-game invert options still apply. Hooks in [`src/mod/mouse_look/hook.cpp`](../src/mod/mouse_look/hook.cpp). Needs `mnk_mode` and `mnk_mouse` |
+| `wet_mouse_sensitivity` | `2.0` | Native mouse look: camera turn per mouse count = 0.022° × this (`0.01`–`100.0`) |
+| `wet_mouse_invert_x` / `wet_mouse_invert_y` | `false` | Invert native mouse look axes, on top of the in-game options |
 
 Keyboard bindings (`keybind_a`, `keybind_lstick_up`, ...) have sensible WASD-style defaults in the file. Rebind any of them the same way.
 

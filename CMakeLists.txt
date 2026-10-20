@@ -28,10 +28,15 @@ include(generated/rexglue.cmake)
 # Sources
 set(WETRECOMP_SOURCES
     src/main.cpp
-    src/gpu_wait_hook.cpp
-    src/language_hook.cpp
+    src/game_patches.cpp
+    src/render/display_refresh.cpp
+    src/render/gpu_wait_hook.cpp
+    src/platform/language_hook.cpp
+    src/mod/mouse_look/mouse_look.cpp
+    src/mod/mouse_look/hook.cpp
 )
 
+# Windows resources (icon)
 if(WIN32)
     list(APPEND WETRECOMP_SOURCES
         src/wetrecomp.rc

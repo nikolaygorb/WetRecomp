@@ -33,6 +33,17 @@ mnk_mode = true
 mnk_mouse = true
 mnk_sensitivity = 1.0
 
+# Native mouse look (src/mod/mouse_look/hook.cpp): the mouse turns the third-person
+# camera directly - 1:1, without the stick response curve and turn speed, and
+# not slowed down by slow motion. Elsewhere (menus, turrets) the mouse falls
+# back to the emulated right stick above (mnk_sensitivity). The in-game invert
+# options apply to it as they do to the stick.
+wet_mouse_look = true
+# Camera turn per mouse count = 0.022 deg x this (same scale as Source games).
+wet_mouse_sensitivity = 2.0
+wet_mouse_invert_x = false
+wet_mouse_invert_y = false
+
 # ─────────────────────────────────────────────────────────────
 # Keyboard bindings (default values)
 # ─────────────────────────────────────────────────────────────
