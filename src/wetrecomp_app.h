@@ -11,12 +11,12 @@
 #include <rex/memory/utils.h>
 #include <rex/rex_app.h>
 #include <rex/runtime.h>
-#include <rex/system/gpu_plugin.h>
 
 #include "debug_tools.h"
 #include "game_cvars.h"
 #include "mod/mouse_look/mouse_look.h"
 #include "render/display_refresh.h"
+#include "render/graphics_backend.h"
 #include "utils.h"
 
 #ifdef REXGLUE_ENABLE_PERF_COUNTERS
@@ -38,17 +38,7 @@ public:
   void OnPreSetup(rex::RuntimeConfig &config) override
   {
     display_refresh::MatchDisplayRefreshRate();
-
-    std::string backend = REXCVAR_GET(graphics_backend);
-    if (backend != "any" && !config.gpu_plugin.empty())
-    {
-      config.graphics = rex::system::LoadGpuPlugin(config.gpu_plugin, backend);
-      if (!config.graphics)
-      {
-        REXLOG_WARN("graphics_backend '{}' unavailable, falling back to automatic selection",
-                    backend);
-      }
-    }
+    graphics_backend::LoadGpuPlugin(config);
   }
 
   void OnPostSetup() override

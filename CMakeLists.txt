@@ -30,6 +30,7 @@ set(WETRECOMP_SOURCES
     src/main.cpp
     src/game_patches.cpp
     src/render/display_refresh.cpp
+    src/render/graphics_backend.cpp
     src/render/gpu_wait_hook.cpp
     src/platform/language_hook.cpp
     src/mod/mouse_look/mouse_look.cpp

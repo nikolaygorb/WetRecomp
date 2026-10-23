@@ -14,14 +14,13 @@ gpu_plugin = "xenos"
 graphics_backend = "any"
 vsync = true
 resolution_scale = 2
-present_effect = "fsr"
+present_effect = "bilinear"
 present_fsr_sharpness_reduction = 0.3
-present_dither = false
-swap_post_effect = "fxaa"
+present_dither = true
+swap_post_effect = "smaa"
 async_shader_compilation = true
 native_2x_msaa = true
-anisotropic_override = 1
-present_fsr_quality_mode = "auto"
+anisotropic_override = 5
 present_fsr_max_upsampling_passes = 1
 present_cas_additional_sharpness = 0.2
 xenos_sample_positions = false
@@ -34,21 +33,19 @@ texture_cache_memory_limit_hard = 4096
 clear_memory_page_state = true
 readback_memexport = false
 readback_memexport_fast = true
+readback_resolve  = "none"
 host_present_from_non_ui_thread = true
 window_offset_in_edram = false
 execute_unclipped_draw_vs_on_cpu = false
-
-# set 'true' for Vulkan backend
-#depth_float24_convert_in_pixel_shader = true
-#depth_float24_round = false
+gpu_allow_invalid_fetch_constants = true
 
 window_width = 1920
 window_height = 1080
 fullscreen = true
 monitor = 0
 resolution = "1920x1080"
-
 render_target_path_d3d12 = "rtv"
+render_target_path_vulkan = "fbo"
 store_shaders = true
 present_letterbox = true
 
@@ -61,7 +58,6 @@ d3d12_queue_priority = 2
 d3d12_submit_on_primary_buffer_end = true
 d3d12_tessellation_wireframe = false
 
-render_target_path_vulkan = "fbo"
 vulkan_log_debug_messages = false
 vulkan_allow_present_mode_immediate = true
 vulkan_allow_present_mode_fifo_relaxed = false
@@ -72,13 +68,6 @@ headless = false
 
 # trace, debug, info, warn, error, critical
 log_level = "error"
-
-gpu_allow_invalid_fetch_constants = true
-use_dedicated_xma_thread = false
-xma_decoder = "new"
-mount_cache = true
-framerate_limit = 0
-readback_resolve  = "fast"
 
 # Perf CSV log path (per-frame metrics). Empty = disabled.
 # Only works when REXGLUE_ENABLE_PERF_COUNTERS is defined (non-Release).
