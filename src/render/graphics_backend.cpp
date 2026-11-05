@@ -8,8 +8,8 @@
 #include <rex/system/gpu_plugin.h>
 
 REXCVAR_DEFINE_STRING(graphics_backend, "any", "GPU",
-                      "Graphics API backend: any, d3d12, vulkan")
-    .allowed({"any", "d3d12", "vulkan"});
+                      "Graphics API backend: any, d3d11, d3d12, vulkan")
+    .allowed({"any", "d3d11", "d3d12", "vulkan"});
 
 namespace
 {

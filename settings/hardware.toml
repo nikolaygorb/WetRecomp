@@ -10,7 +10,7 @@
 gpu_plugin = "xenos"
 
 # "any" (d3d12 - win default, vulkan - lin default)
-# "d3d12" / "vulkan"
+# "d3d12" / "vulkan" / "d3d11"
 graphics_backend = "any"
 vsync = true
 resolution_scale = 2
@@ -23,21 +23,17 @@ native_2x_msaa = true
 anisotropic_override = 5
 present_fsr_max_upsampling_passes = 1
 present_cas_additional_sharpness = 0.2
-xenos_sample_positions = false
-use_fuzzy_alpha_epsilon = false
-depth_bias_shader_offset = true
-force_depth_clamp = false
 
 texture_cache_memory_limit_soft = 1024
 texture_cache_memory_limit_hard = 4096
-clear_memory_page_state = true
-readback_memexport = false
+readback_memexport = true
 readback_memexport_fast = true
-readback_resolve  = "none"
-host_present_from_non_ui_thread = true
-window_offset_in_edram = false
-execute_unclipped_draw_vs_on_cpu = false
+readback_resolve = "fast"
+host_present_from_non_ui_thread	= true
 gpu_allow_invalid_fetch_constants = true
+depth_bias_shader_offset = true
+shared_memory_skip_unchanged_uploads = true
+async_depth_only_pipelines = true
 
 window_width = 1920
 window_height = 1080
@@ -57,12 +53,22 @@ d3d12_break_on_warning = false
 d3d12_queue_priority = 2
 d3d12_submit_on_primary_buffer_end = true
 d3d12_tessellation_wireframe = false
+d3d12_readback_resolve = false
 
 vulkan_log_debug_messages = false
-vulkan_allow_present_mode_immediate = true
+vulkan_allow_present_mode_immediate = false
 vulkan_allow_present_mode_fifo_relaxed = false
-vulkan_allow_present_mode_mailbox = false
+vulkan_allow_present_mode_mailbox = true
 vulkan_async_skip_incomplete_frames = false
+vulkan_hoist_shared_memory_uploads = true
+vulkan_max_frames_in_flight = 2
+vulkan_allow_present_mode_fifo_latest_ready = true
+vulkan_resolve_into_textures = true
+
+d3d11_adapter = -1
+#d3d11_block_compressed_textures = true
+d3d11_resolve_into_textures = true
+d3d11_debug = false
 
 headless = false
 

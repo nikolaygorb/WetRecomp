@@ -58,7 +58,7 @@ Logs land in `out\build\<preset>\logs\*.log`.
 
 ## Configuration
 
-`settings/hardware.toml` (rendering/perf, including `wet_gpu_wait_mode` for GPU-wait CPU usage and `user_language` for the game language: 1 English, 3 German, 4 French, 5 Spanish, 6 Italian) and `settings/mapping.toml` (input) load automatically. CLI flags and `REX_*` env vars override them. See [`settings/README.md`](settings/README.md) for the reference.
+`settings/hardware.toml` (rendering/perf, including `wet_gpu_wait_mode` for GPU-wait CPU usage and `user_language` for the game language: 1 English, 3 German, 4 French, 5 Spanish, 6 Italian) and `settings/mapping.toml` (input) load automatically. CLI flags and `REX_*` env vars override them. See [`settings/README.md`](settings/README.md) for the reference, [`settings/faq.md`](settings/faq.md) for every graphics option (including the experimental `graphics_backend = "d3d11"`), [`settings/texture-replacement.md`](settings/texture-replacement.md) for HD texture packs and [`settings/gpu-traces.md`](settings/gpu-traces.md) for GPU frame traces.
 
 ## Credits
 

@@ -45,7 +45,7 @@ wet_mouse_invert_x = false
 wet_mouse_invert_y = false
 
 # ─────────────────────────────────────────────────────────────
-# Keyboard bindings (default values)
+# Keyboard bindings (X, Y and the triggers differ from the SDK defaults)
 # ─────────────────────────────────────────────────────────────
 # Format: comma-separated list of keys, optional modifiers (Shift+, Ctrl+, Alt+)
 # Mouse buttons: LMB, RMB, MMB
@@ -53,12 +53,12 @@ wet_mouse_invert_y = false
 # Controller buttons
 keybind_a = "Semicolon,Space"          # A button
 keybind_b = "Quote,Backspace"          # B button
-keybind_x = "L"                        # X button
-keybind_y = "P"                        # Y button
+keybind_x = "Q"                        # X button
+keybind_y = "E"                        # Y button
 
 # Triggers (analog)
-keybind_left_trigger = "Q,I,RMB"       # Left trigger (aim)
-keybind_right_trigger = "E,O,LMB"      # Right trigger (fire)
+keybind_left_trigger = "I,RMB"       # Left trigger (aim)
+keybind_right_trigger = "O,LMB"      # Right trigger (fire)
 
 # Shoulder buttons
 keybind_left_shoulder = "1"            # Left shoulder (LB)

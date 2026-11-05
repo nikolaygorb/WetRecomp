@@ -9,3 +9,8 @@ game_root = "assets"
 file_path = "assets/default.xex"
 out_directory_path = "generated/default"
 includes = ["default_functions.toml", "patches.toml"]
+
+cr_as_local = true
+ctr_as_local = true
+xer_as_local = true
+reserved_as_local = true

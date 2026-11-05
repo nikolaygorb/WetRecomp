@@ -53,8 +53,8 @@
             "hidden": true,
             "inherits": "windows-base",
             "cacheVariables": {
-                "CMAKE_C_FLAGS": "-march=armv8-a",
-                "CMAKE_CXX_FLAGS": "-march=armv8-a"
+                "CMAKE_C_FLAGS": "-march=armv8.1-a",
+                "CMAKE_CXX_FLAGS": "-march=armv8.1-a"
             }
         },
         {
@@ -71,8 +71,8 @@
             "hidden": true,
             "inherits": "mac-base",
             "cacheVariables": {
-                "CMAKE_C_FLAGS": "-march=armv8-a",
-                "CMAKE_CXX_FLAGS": "-march=armv8-a",
+                "CMAKE_C_FLAGS": "-mcpu=apple-m1",
+                "CMAKE_CXX_FLAGS": "-mcpu=apple-m1",
                 "CMAKE_OSX_ARCHITECTURES": "arm64"
             }
         },

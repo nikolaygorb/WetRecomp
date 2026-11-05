@@ -20,6 +20,7 @@ set(REXSDK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/rexglue-sdk" CACHE PATH "
 # Enable both graphics backends
 if(WIN32)
     set(REXGLUE_USE_D3D12 ON CACHE BOOL "Enable D3D12 graphics backend")
+    set(REXGLUE_USE_D3D11 ON CACHE BOOL "Enable D3D11 graphics backend [experimental]")
 endif()
 set(REXGLUE_USE_VULKAN ON CACHE BOOL "Enable Vulkan graphics backend")
 
@@ -32,6 +33,7 @@ set(WETRECOMP_SOURCES
     src/render/display_refresh.cpp
     src/render/graphics_backend.cpp
     src/render/gpu_wait_hook.cpp
+    src/render/native_memory_hook.cpp
     src/platform/language_hook.cpp
     src/mod/mouse_look/mouse_look.cpp
     src/mod/mouse_look/hook.cpp
