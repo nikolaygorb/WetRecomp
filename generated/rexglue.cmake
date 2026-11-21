@@ -37,12 +37,19 @@ set(REXGLUE_RECOMP_DEBUG_INFO "line-tables-only" CACHE STRING
 
 # Guest SEH scopes emit __try/__except, which traps hardware faults only under
 # asynchronous EH. clang++ spells that flag the GNU way.
+# Guest memory is accessed through volatile pointers. For x86 and x64 Windows
+# targets MSVC and clang default to MS volatile semantics, under which every
+# volatile load is an acquire and every store a release: the compiler then
+# keeps no guest register of the context in a host register across a guest
+# memory access, and writes each one back before it. ISO volatile keeps what
+# guest memory needs (each access done once, at its width, in order with the
+# other volatile accesses); x86 orders loads and stores the same way either way.
 set(REXGLUE_RECOMP_OPTIONS "")
 if(WIN32)
     if(MSVC)
-        list(APPEND REXGLUE_RECOMP_OPTIONS /EHa)
+        list(APPEND REXGLUE_RECOMP_OPTIONS /EHa /volatile:iso)
     elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        list(APPEND REXGLUE_RECOMP_OPTIONS -fasync-exceptions)
+        list(APPEND REXGLUE_RECOMP_OPTIONS -fasync-exceptions -fno-ms-volatile)
     endif()
 endif()
 if(REXGLUE_RECOMP_DEBUG_INFO STREQUAL "none")
@@ -51,6 +58,59 @@ if(REXGLUE_RECOMP_DEBUG_INFO STREQUAL "none")
 elseif(REXGLUE_RECOMP_DEBUG_INFO STREQUAL "line-tables-only")
     list(APPEND REXGLUE_RECOMP_OPTIONS
         $<$<CXX_COMPILER_ID:Clang,AppleClang>:-gline-tables-only>)
+endif()
+
+# Instruction set of the generated code on x86-64 (docs/codegen-performance.md):
+# "" the project's own, fma adds AVX and FMA, x86-64-v3 adds AVX2, FMA, BMI1/2,
+# MOVBE, LZCNT and F16C. The executable then needs such a CPU: it checks at
+# start (rex/host_isa.h) and says so instead of crashing. Ship it as a second
+# build beside the baseline one.
+set(REXGLUE_RECOMP_ISA "" CACHE STRING
+    "Instruction set of the generated code on x86-64: empty, fma or x86-64-v3")
+set_property(CACHE REXGLUE_RECOMP_ISA PROPERTY STRINGS "" fma x86-64-v3)
+set(REXGLUE_RECOMP_HOST_DEFINITIONS "")
+if(REXGLUE_RECOMP_ISA AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+    if(REXGLUE_RECOMP_ISA STREQUAL "fma")
+        if(MSVC)
+            list(APPEND REXGLUE_RECOMP_OPTIONS /arch:AVX2)
+        else()
+            list(APPEND REXGLUE_RECOMP_OPTIONS -mfma)
+        endif()
+        list(APPEND REXGLUE_RECOMP_HOST_DEFINITIONS REXGLUE_RECOMP_ISA_FMA=1)
+    elseif(REXGLUE_RECOMP_ISA STREQUAL "x86-64-v3")
+        if(MSVC)
+            list(APPEND REXGLUE_RECOMP_OPTIONS /arch:AVX2)
+        else()
+            list(APPEND REXGLUE_RECOMP_OPTIONS -march=x86-64-v3)
+        endif()
+        list(APPEND REXGLUE_RECOMP_HOST_DEFINITIONS REXGLUE_RECOMP_ISA_X86_64_V3=1)
+    else()
+        message(FATAL_ERROR "REXGLUE_RECOMP_ISA: '${REXGLUE_RECOMP_ISA}' is not empty, fma or x86-64-v3")
+    endif()
+endif()
+
+# Profile-guided optimization of the generated code (clang): "" off; generate
+# builds it instrumented (run the title, the profile is written on exit to
+# LLVM_PROFILE_FILE, default.profraw by default; merge with llvm-profdata);
+# a .profdata file builds it optimized with that profile.
+set(REXGLUE_RECOMP_PGO "" CACHE STRING
+    "Profile-guided optimization of the generated code: empty, generate or a .profdata file")
+set(REXGLUE_RECOMP_LINK_OPTIONS "")
+if(REXGLUE_RECOMP_PGO)
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        message(FATAL_ERROR "REXGLUE_RECOMP_PGO needs clang")
+    endif()
+    if(REXGLUE_RECOMP_PGO STREQUAL "generate")
+        list(APPEND REXGLUE_RECOMP_OPTIONS -fprofile-instr-generate)
+        list(APPEND REXGLUE_RECOMP_LINK_OPTIONS -fprofile-instr-generate)
+        list(APPEND REXGLUE_RECOMP_HOST_DEFINITIONS REXGLUE_RECOMP_PGO_GENERATE=1)
+    else()
+        if(NOT EXISTS "${REXGLUE_RECOMP_PGO}")
+            message(FATAL_ERROR "REXGLUE_RECOMP_PGO: no profile at ${REXGLUE_RECOMP_PGO}")
+        endif()
+        list(APPEND REXGLUE_RECOMP_OPTIONS "-fprofile-instr-use=${REXGLUE_RECOMP_PGO}"
+            -Wno-profile-instr-unprofiled -Wno-profile-instr-out-of-date)
+    endif()
 endif()
 
 # Include entrypoint generated code if codegen has been run.
@@ -70,6 +130,11 @@ endif()
 function(rexglue_apply_recomp_settings target_name pch_header)
     target_precompile_headers(${target_name} PRIVATE "${pch_header}")
     target_compile_options(${target_name} PRIVATE ${REXGLUE_RECOMP_OPTIONS})
+    # A guest DLL module links the profile runtime itself (no effect on an
+    # OBJECT library).
+    if(REXGLUE_RECOMP_LINK_OPTIONS)
+        target_link_options(${target_name} PRIVATE ${REXGLUE_RECOMP_LINK_OPTIONS})
+    endif()
 endfunction()
 
 # Configure a rexglue target with SDK libraries and platform settings.
@@ -100,6 +165,16 @@ macro(rexglue_setup_target target_name)
         ${REXGLUE_ENTRYPOINT_INCLUDE_DIR}
     )
     target_link_libraries(${target_name} PRIVATE rex::runtime)
+    # REXGLUE_RECOMP_ISA / REXGLUE_RECOMP_PGO: the host's start-up check and
+    # profile writer (rex_app.cpp), and the profile runtime at link.
+    if(REXGLUE_RECOMP_HOST_DEFINITIONS)
+        target_compile_definitions(${target_name} PRIVATE
+            ${REXGLUE_RECOMP_HOST_DEFINITIONS})
+    endif()
+    if(REXGLUE_RECOMP_LINK_OPTIONS)
+        target_link_options(${target_name} PRIVATE
+            ${REXGLUE_RECOMP_LINK_OPTIONS})
+    endif()
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/metadata/icons")
         rexglue_embed_metadata(${target_name}
             DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/metadata/icons"

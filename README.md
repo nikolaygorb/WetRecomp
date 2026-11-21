@@ -47,18 +47,22 @@ cmake --preset linux-amd64-relwithdebinfo
 cmake --build out/build/linux-amd64-relwithdebinfo
 ```
 
+Optional, for a second build beside the baseline one: `-DREXGLUE_RECOMP_ISA=x86-64-v3` (or `fma`) builds the generated code for AVX2/FMA CPUs (checked at start), `-DREXGLUE_RECOMP_PGO=generate` / `=<file>.profdata` does profile-guided optimization with clang. See [`codegen-performance.md`](thirdparty/rexglue-sdk/docs/codegen-performance.md).
+
 ## Run
 
 ```powershell
 cd out\build\win-amd64-relwithdebinfo
-.\wetrecomp.exe
+.\wetrecomp_launcher.exe   # or .\wetrecomp.exe to start the game directly
 ```
+
+The launcher picks the main settings (display, renderer, upscaling, controls, language, the game's own patches), writes them to `settings/*.toml` and starts the game with Play; after a crash it reopens with Safe mode (emulated renderer, scale 1). Its page is [`launcher/launcher.toml`](launcher/launcher.toml) (format: [`launcher.md`](thirdparty/rexglue-sdk/docs/launcher.md)), fonts in [`launcher/fonts/`](launcher/fonts/).
 
 Logs land in `out\build\<preset>\logs\*.log`.
 
 ## Configuration
 
-`settings/hardware.toml` (rendering/perf, including `wet_gpu_wait_mode` for GPU-wait CPU usage and `user_language` for the game language: 1 English, 3 German, 4 French, 5 Spanish, 6 Italian) and `settings/mapping.toml` (input) load automatically. CLI flags and `REX_*` env vars override them. See [`settings/README.md`](settings/README.md) for the reference, [`settings/faq.md`](settings/faq.md) for every graphics option (including the experimental `graphics_backend = "d3d11"`), [`settings/texture-replacement.md`](settings/texture-replacement.md) for HD texture packs and [`settings/gpu-traces.md`](settings/gpu-traces.md) for GPU frame traces.
+`settings/hardware.toml` (rendering/perf, including `gpu_plugin` — `"native"` for the SDK's native Vulkan renderer (the file's choice) or `"xenos"` for GPU emulation on D3D12/Vulkan/D3D11 — `wet_gpu_wait_mode` for GPU-wait CPU usage and `user_language` for the game language: 1 English, 3 German, 4 French, 5 Spanish, 6 Italian) and `settings/mapping.toml` (input) load automatically. CLI flags and `REX_*` env vars override them. See [`settings/README.md`](settings/README.md) for the reference, [`settings/faq.md`](settings/faq.md) for every graphics option (including the experimental `graphics_backend = "d3d11"`) and [`settings/texture-replacement.md`](settings/texture-replacement.md) for HD texture packs.
 
 ## Credits
 

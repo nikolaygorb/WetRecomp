@@ -1,0 +1,146 @@
+# Wet: the launcher's page for this title (format: thirdparty/rexglue-sdk/docs/launcher.md).
+# The common rows (display, renderer, upscaling, controls, language, log) come from the SDK's
+# launcher/common.toml; rows here with the same key replace them.
+
+[game]
+name = "Wet"
+required_files = ["assets/default.xex"]
+
+[common]
+hide = ["max_local_users"]  # single player
+
+[theme]
+bg = "#170B09"
+bg2 = "#0C0504"
+side = "#120807"
+panel = "#2A1410"
+panel_hot = "#371B15"
+border = "#4A2419"
+text = "#F4E9DC"
+dim = "#BFA593"
+accent = "#E23A1F"
+accent_hi = "#EE5A3E"
+accent_text = "#FFF4E6"
+accent2 = "#F2C14E"
+warn = "#F2C14E"
+ok = "#9CCB6A"
+display_font = "fonts/AlfaSlabOne-Regular.ttf"
+tagline = "Recompiled"
+
+# Cream slab letters on a red band, tilted like the cover.
+[[theme.wordmark]]
+text = "WET"
+size = 40
+tracking = 0.04
+color = "#EADBBE"
+plate = { color = "#A3140E", pad_x = 20, pad_y = 6 }
+rotate = 4
+texture = { kind = "distress", color = "#A3140E", amount = 1.0, scale = 3 }
+
+#------------------------------------------------------------------------------
+# Game
+#------------------------------------------------------------------------------
+
+[[row]]
+page = "Game"
+key = "wet_fps60_unlock"
+kind = "toggle"
+label = "60 fps"
+default = true
+restart = true
+help = "Runs the game at 60 frames per second instead of the original 30."
+
+[[row]]
+page = "Game"
+key = "wet_match_display_refresh"
+kind = "toggle"
+label = "Match the monitor's refresh"
+default = true
+help = "Paces frames to the monitor's refresh rate for even motion."
+
+[[row]]
+page = "Game"
+key = "wet_disable_depth_of_field"
+kind = "toggle"
+invert = true
+label = "Depth of field"
+default = false
+help = "Off removes the blur on distant objects."
+
+[[row]]
+page = "Game"
+key = "wet_disable_motion_blur"
+kind = "toggle"
+invert = true
+label = "Motion blur"
+default = false
+help = "Off removes the camera motion blur."
+
+[[row]]
+page = "Game"
+key = "wet_disable_shaky_camera"
+kind = "toggle"
+invert = true
+label = "Camera shake"
+default = false
+help = "Off steadies the camera in cutscenes and slow motion."
+
+#------------------------------------------------------------------------------
+# Controls
+#------------------------------------------------------------------------------
+
+[[row]]
+page = "Controls"
+key = "wet_mouse_look"
+file = "mapping"
+kind = "toggle"
+label = "Mouse look"
+default = true
+help = "Raw mouse movement turns the camera, 1:1, without stick dead zones or acceleration."
+
+[[row]]
+page = "Controls"
+key = "wet_mouse_sensitivity"
+file = "mapping"
+kind = "slider"
+label = "Mouse sensitivity"
+min = 0.2
+max = 6.0
+step = 0.1
+decimals = 1
+default = 2.0
+enable_if = { key = "wet_mouse_look", value = true }
+help = "Camera turn per mouse count: 0.022° × this value, as in Source games."
+
+[[row]]
+page = "Controls"
+key = "wet_mouse_invert_y"
+file = "mapping"
+kind = "toggle"
+label = "Invert mouse Y"
+default = false
+enable_if = { key = "wet_mouse_look", value = true }
+help = "Moving the mouse up looks down."
+
+[[row]]
+page = "Controls"
+key = "wet_mouse_invert_x"
+file = "mapping"
+kind = "toggle"
+label = "Invert mouse X"
+default = false
+enable_if = { key = "wet_mouse_look", value = true }
+help = "Moving the mouse right looks left."
+
+#------------------------------------------------------------------------------
+# Advanced
+#------------------------------------------------------------------------------
+
+[[row]]
+page = "Advanced"
+key = "wet_gpu_wait_mode"
+kind = "choice"
+label = "GPU wait"
+choices = [[0, "Spin"], [1, "Yield"], [2, "Sleep"]]
+default = 2
+help = "How the game thread waits for free command-buffer space. Spin is the original (a full CPU core), Yield gives the core away, Sleep naps 200 µs."

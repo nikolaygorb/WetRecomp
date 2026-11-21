@@ -48,7 +48,7 @@ wet_mouse_invert_y = false
 # Keyboard bindings (X, Y and the triggers differ from the SDK defaults)
 # ─────────────────────────────────────────────────────────────
 # Format: comma-separated list of keys, optional modifiers (Shift+, Ctrl+, Alt+)
-# Mouse buttons: LMB, RMB, MMB
+# Mouse buttons: LMB, RMB, MMB, MB4, MB5 (side buttons); wheel: WheelUp, WheelDown
 
 # Controller buttons
 keybind_a = "Semicolon,Space"          # A button

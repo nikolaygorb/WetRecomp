@@ -13,13 +13,6 @@ REXCVAR_DEFINE_STRING(graphics_backend, "any", "GPU",
 
 namespace
 {
-  // Vulkan needs exact float24 depth conversion in the pixel shader. Changing the default (not
-  // the value) keeps an explicit hardware.toml / --flag value in charge, and "Save to config"
-  // doesn't write it, so a later D3D12 run doesn't pick it up.
-  void ApplyVulkanDefaults()
-  {
-    rex::cvar::SetDefaultValue("depth_float24_convert_in_pixel_shader", "true");
-  }
 } // namespace
 
 namespace graphics_backend
@@ -48,8 +41,5 @@ namespace graphics_backend
       vulkan = config.graphics != nullptr;
 #endif
     }
-
-    if (vulkan)
-      ApplyVulkanDefaults();
   }
 } // namespace graphics_backend

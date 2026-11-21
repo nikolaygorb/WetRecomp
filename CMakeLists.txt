@@ -54,7 +54,9 @@ endif()
 
 # GPU_PLUGINS xenos required for xenos rendering; without it rexgpu-xenosd.dll
 # isn't staged next to the exe and the runtime fails to find the GPU plugin.
-rexglue_setup_target(wetrecomp GPU_PLUGINS xenos)
+rexglue_setup_target(wetrecomp GPU_PLUGINS xenos native)
+
+rexglue_add_launcher(wetrecomp ICON_RC src/wetrecomp.rc)
 
 # SDL looks for this file (name set by settings/mapping.toml's
 # hid_mappings_file) next to the exe at startup to fill in gamepads it

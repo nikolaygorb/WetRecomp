@@ -14,3 +14,5 @@ cr_as_local = true
 ctr_as_local = true
 xer_as_local = true
 reserved_as_local = true
+non_volatile_gpr_as_local = true
+non_argument_gpr_as_local = true

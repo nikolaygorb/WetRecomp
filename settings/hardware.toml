@@ -7,11 +7,12 @@
 #
 # Flat key = value only
 
-gpu_plugin = "xenos"
+# native / xenos
+gpu_plugin = "native"
 
 # "any" (d3d12 - win default, vulkan - lin default)
 # "d3d12" / "vulkan" / "d3d11"
-graphics_backend = "any"
+graphics_backend = "vulkan"
 vsync = true
 resolution_scale = 2
 present_effect = "bilinear"
@@ -21,11 +22,13 @@ swap_post_effect = "smaa"
 async_shader_compilation = true
 native_2x_msaa = true
 anisotropic_override = 5
+present_fsr_quality_mode = "auto"
 present_fsr_max_upsampling_passes = 1
 present_cas_additional_sharpness = 0.2
 
-texture_cache_memory_limit_soft = 1024
-texture_cache_memory_limit_hard = 4096
+# native render option
+#native_resolution_scale = 2.25
+
 readback_memexport = true
 readback_memexport_fast = true
 readback_resolve = "fast"
@@ -55,13 +58,13 @@ d3d12_submit_on_primary_buffer_end = true
 d3d12_tessellation_wireframe = false
 d3d12_readback_resolve = false
 
+vulkan_device = -1
 vulkan_log_debug_messages = false
 vulkan_allow_present_mode_immediate = false
 vulkan_allow_present_mode_fifo_relaxed = false
 vulkan_allow_present_mode_mailbox = true
 vulkan_async_skip_incomplete_frames = false
 vulkan_hoist_shared_memory_uploads = true
-vulkan_max_frames_in_flight = 2
 vulkan_allow_present_mode_fifo_latest_ready = true
 vulkan_resolve_into_textures = true
 
@@ -78,10 +81,13 @@ log_level = "error"
 # Perf CSV log path (per-frame metrics). Empty = disabled.
 # Only works when REXGLUE_ENABLE_PERF_COUNTERS is defined (non-Release).
 #perf_log_csv = "benchmark.csv"
+#frame_stats_interval = 5
 
 # Enable runtime debug tools (stub sweep, missing function scan).
 # Produces logs/missed_functions.txt and logs/stub_sweep.txt.
 dev_debug_runtime = false
+unregistered_function_log = "unregistered_functions.txt"
+trace_gpu_prefix = "traces"
 
 # Ported xenia-canary game-patches for WET (src/game_patches.cpp, hooks in
 # patches.toml). The 60 FPS patch is off in the compiled default (as upstream):
